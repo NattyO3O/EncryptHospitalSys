@@ -19,8 +19,8 @@ export default function SignInSide() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
-            userName: data.get('UserName'),
-            passWord: data.get('PassWord'),
+            UserName: data.get('UserName'),
+            PassWord: data.get('PassWord'),
         });
     };
 

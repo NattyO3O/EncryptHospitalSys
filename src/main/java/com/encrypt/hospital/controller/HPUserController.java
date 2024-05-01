@@ -1,23 +1,27 @@
 package com.encrypt.hospital.controller;
 
 import com.encrypt.hospital.model.HpUser;
-import com.encrypt.hospital.repository.HpUserRepository;
+import com.encrypt.hospital.service.HpUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api")
 public class HPUserController {
 
     @Autowired
-    private HpUserRepository hpUserRepository;
+    private HpUserService userService;
 
-    @GetMapping
-    public List<HpUser> getAllUsers() {
-        return hpUserRepository.findAll();
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody HpUser user) {
+        try {
+            HpUser registeredUser = userService.registerUser(user);
+            return ResponseEntity.ok(registeredUser);
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
 }

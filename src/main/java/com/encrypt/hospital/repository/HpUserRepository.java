@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HpUserRepository extends JpaRepository<HpUser, Long> {
+public interface HpUserRepository extends JpaRepository<HpUser, Integer> {
+    HpUser findByUserName(String userName);
 }

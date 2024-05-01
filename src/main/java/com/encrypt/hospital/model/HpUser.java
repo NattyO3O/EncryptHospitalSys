@@ -3,7 +3,7 @@ package com.encrypt.hospital.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="HPUser")
+@Table(name = "hpuser")
 public class HpUser{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

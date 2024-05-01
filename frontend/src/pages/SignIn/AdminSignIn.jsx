@@ -21,6 +21,7 @@ export default function AdminSignIn() {
         console.log({
             userName: data.get('UserName'),
             passWord: data.get('PassWord'),
+            certificate: data.get('certificate'),
         });
     };
 
@@ -78,6 +79,17 @@ export default function AdminSignIn() {
                                 type="PassWord"
                                 id="PassWord"
                                 autoComplete="current-password"
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="certificate"
+                                label="数字证书"
+                                type="file"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
                             <Button
                                 type="submit"
