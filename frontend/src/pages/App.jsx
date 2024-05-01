@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function App() {
     return (
@@ -13,8 +14,8 @@ function App() {
                             <div className="carousel-item active">
                                 <img className="d-block w-100" src="slide1.jpg" alt="First slide" />
                                 <div className="carousel-caption d-none d-md-block">
-                                    <h3>欢迎使用</h3>
-                                    <p>XX医院医疗信息系统</p>
+                                    <h2>XX医院医疗信息系统</h2>
+                                    <p>欢迎使用</p>
                                 </div>
                             </div>
                         </div>
@@ -30,20 +31,23 @@ function App() {
                 </div>
             </div>
             <div className="row text-center mt-4">
-                <div className="col-md-4">
-                    <img src="fast.jpg" alt="Column 1" style={{ width: '20%', marginBottom: '20px' }} />
+                <div className="col-md-4 d-flex flex-column align-items-center justify-content-start">
+                    <img src="fast.jpg" alt="Column 1" style={{ width: '20%', maxWidth: '200px', marginBottom: '20px' }} />
                     <h5>方便快捷的线上挂号功能</h5>
                     <p>本系统提供线上挂号服务，无需排队等待，您可以随时随地通过我们的平台预约医生，提高就医效率。</p>
+                    <Link to="/signIn" className="btn btn-primary mt-auto">立即使用</Link>
                 </div>
-                <div className="col-md-4">
-                    <img src="safe.jpg" alt="Column 2" style={{ width: '18%', marginBottom: '20px' }} />
+                <div className="col-md-4 d-flex flex-column align-items-center justify-content-start">
+                    <img src="safe.jpg" alt="Column 2" style={{ width: '18%', maxWidth: '200px', marginBottom: '20px' }} />
                     <h5>数据传输存储加密</h5>
                     <p>我们重视用户数据的安全性，采用先进的加密技术确保数据在传输和存储过程中的安全，保护用户隐私不被泄露。</p>
+                    <Link to="/signIn" className="btn btn-primary mt-auto">立即使用</Link>
                 </div>
-                <div className="col-md-4">
-                    <img src="user.jpg" alt="Column 3" style={{ width: '18%', marginBottom: '20px' }} />
+                <div className="col-md-4 d-flex flex-column align-items-center justify-content-start">
+                    <img src="user.jpg" alt="Column 3" style={{ width: '18%', maxWidth: '200px', marginBottom: '20px' }} />
                     <h5>用户友好的交互界面</h5>
                     <p>系统设计注重用户体验，操作便捷，使用户能够轻松地管理医疗信息。</p>
+                    <Link to="/signIn" className="btn btn-primary mt-auto">立即使用</Link>
                 </div>
             </div>
         </div>

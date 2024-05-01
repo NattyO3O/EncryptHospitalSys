@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import {
     Snackbar,
     Alert,
@@ -19,10 +19,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const defaultTheme = createTheme();
 
-function SignUp() {
+function SignUp({history}) { //通过 props 接收 history 对象
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
     const [passwordStrength, setPasswordStrength] = useState(0);
@@ -30,7 +31,6 @@ function SignUp() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
-    const navigate = useNavigate();
 
     const assessPasswordStrength = (password) => {
         let strength = 0;
@@ -87,7 +87,7 @@ function SignUp() {
                 setSnackbarSeverity('success');
                 setOpenSnackbar(true);
                 setTimeout(() => {
-                    navigate('/signIn');
+                    history.push('/signIn');  // 使用 history.push 进行跳转
                 }, 3000); // 3秒后跳转
             } else {
                 throw new Error('Unexpected error');
@@ -102,6 +102,9 @@ function SignUp() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
+            <Link component={RouterLink} to="/" underline="hover">
+                {<ArrowBackIosNewIcon />}返回首页
+            </Link>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -190,4 +193,4 @@ function SignUp() {
     );
 }
 
-export default SignUp;
+export default withRouter(SignUp); // 使用 withRouter 高阶组件包装 SignUp 组件

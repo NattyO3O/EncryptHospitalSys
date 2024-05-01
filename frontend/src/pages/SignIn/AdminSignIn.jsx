@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 const defaultTheme = createTheme();
 
@@ -44,6 +45,9 @@ export default function AdminSignIn() {
                     }}
                 />
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Link component={RouterLink} to="/" underline="hover">
+                        {<ArrowBackIosNewIcon />}返回首页
+                    </Link>
                     <Box
                         sx={{
                             my: 8,
