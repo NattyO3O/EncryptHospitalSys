@@ -5,6 +5,7 @@ import SignUp from "../pages/SignIn/SignUp"
 import SignInSide from "../pages/SignIn/SignInSide"
 import AdminSignIn from "../pages/SignIn/AdminSignIn"
 import PopMessage from "../components/popMessage";
+import test from "../pages/test"
 
 export default class index extends Component{
     render(){
@@ -16,6 +17,7 @@ export default class index extends Component{
                     <Route path="/signIn" component={ SignInSide } />
                     <Route path="/signUp" component={ SignUp } />
                     <Route path="/adminSignIn" component={ AdminSignIn } />
+                    <Route path="/test" component={test} />
                 </Switch>
             </Router>
         )

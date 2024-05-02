@@ -24,4 +24,15 @@ public class HPUserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody HpUser loginRequest) {
+        System.out.println("接收到来自用户的登录请求: " + loginRequest.getUserName());
+        try {
+            HpUser user = userService.loginUser(loginRequest.getUserName(), loginRequest.getPassWord());
+            return ResponseEntity.ok(user);
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

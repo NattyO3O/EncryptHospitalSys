@@ -20,6 +20,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { setMessage } from '../../actions/flash';
+import { registerUser } from "../../api/regist";
 
 const defaultTheme = createTheme();
 
@@ -67,28 +68,14 @@ function SignUp({ history }) {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userName, passWord })
-            });
-
-            if (response.status === 409) {
-                const errorText = await response.text();
-                dispatch(setMessage(errorText, 'error'));
-            } else if (response.ok) {
-                dispatch(setMessage('注册成功,3秒后自动跳转至登录页面。', 'success'));
-                setTimeout(() => {
-                    history.push('/signIn');  // 使用 history.push 进行跳转
-                }, 3000); // 3秒后跳转
-            } else {
-                throw new Error('Unexpected error');
-            }
+            await registerUser({ userName, passWord });
+            dispatch(setMessage('注册成功, 3秒后自动跳转至登录页面。', 'success'));
+            setTimeout(() => {
+                history.push('/signIn');
+            }, 3000);
         } catch (error) {
-            console.error('Error during registration:', error);
-            dispatch(setMessage('网络错误，请重试。', 'error'));
+            console.error('Registration error:', error.message);
+            dispatch(setMessage(error.message || '网络错误，请重试。', 'error'));
         }
     };
 
