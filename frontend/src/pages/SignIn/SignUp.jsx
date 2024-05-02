@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import {
-    Snackbar,
-    Alert,
     Avatar,
     Button,
     CssBaseline,
@@ -18,19 +16,20 @@ import { Link as RouterLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
+import { setMessage } from '../../actions/flash';
 
 const defaultTheme = createTheme();
 
-function SignUp({history}) { //通过 props 接收 history 对象
+function SignUp({ history }) {
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
     const [passwordStrength, setPasswordStrength] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+
+    const dispatch = useDispatch();
 
     const assessPasswordStrength = (password) => {
         let strength = 0;
@@ -41,6 +40,7 @@ function SignUp({history}) { //通过 props 接收 history 对象
         if (/[^A-Za-z0-9]/.test(password)) strength += 20;
         return strength;
     };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'UserName') {
@@ -62,9 +62,7 @@ function SignUp({history}) { //通过 props 接收 history 对象
     const onSubmit = async (e) => {
         e.preventDefault();
         if (!userName || !passWord) {
-            setSnackbarMessage('用户名或密码不能为空！');
-            setSnackbarSeverity('error');
-            setOpenSnackbar(true);
+            dispatch(setMessage('用户名或密码不能为空！', 'error'));
             return;
         }
 
@@ -79,13 +77,9 @@ function SignUp({history}) { //通过 props 接收 history 对象
 
             if (response.status === 409) {
                 const errorText = await response.text();
-                setSnackbarMessage(errorText);
-                setSnackbarSeverity('error');
-                setOpenSnackbar(true);
+                dispatch(setMessage(errorText, 'error'));
             } else if (response.ok) {
-                setSnackbarMessage('注册成功,3秒后自动跳转至登录页面。');
-                setSnackbarSeverity('success');
-                setOpenSnackbar(true);
+                dispatch(setMessage('注册成功,3秒后自动跳转至登录页面。', 'success'));
                 setTimeout(() => {
                     history.push('/signIn');  // 使用 history.push 进行跳转
                 }, 3000); // 3秒后跳转
@@ -94,16 +88,16 @@ function SignUp({history}) { //通过 props 接收 history 对象
             }
         } catch (error) {
             console.error('Error during registration:', error);
-            setSnackbarMessage('网络错误，请重试。');
-            setSnackbarSeverity('error');
-            setOpenSnackbar(true);
+            dispatch(setMessage('网络错误，请重试。', 'error'));
         }
     };
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Link component={RouterLink} to="/" underline="hover">
-                {<ArrowBackIosNewIcon />}返回首页
+            <Link component={RouterLink} to="/" underline="hover" style={{ textDecoration: 'none', color: 'inherit', position: 'absolute', top: 10, left: 10 }}>
+                <Button startIcon={<ArrowBackIosNewIcon />} color="inherit">
+                    返回首页
+                </Button>
             </Link>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
@@ -147,23 +141,23 @@ function SignUp({history}) { //通过 props 接收 history 对象
                                     value={passWord}
                                     onChange={handleChange}
                                     InputProps={{
-                                        endAdornment:(
+                                        endAdornment: (
                                             <InputAdornment position="end">
                                                 <IconButton
                                                     aria-label="toggle password visibility"
                                                     onClick={handleClickShowPassword}
                                                     onMouseDown={handleMouseDownPassword}
-                                                    >
-                                                    {showPassword ? <Visibility/> : <VisibilityOff />}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
                                                 </IconButton>
                                             </InputAdornment>
                                         ),
                                     }}
                                 />
                                 <Typography variant="caption" display="block" gutterBottom sx={{ mt: 1 }}>
-                                    密码强度：
+                                    密码强度
                                 </Typography>
-                                <LinearProgress variant="determinate" value={passwordStrength} sx={{ mt: 2, width: '100%' }} />
+                                <LinearProgress variant="determinate" value={passwordStrength} sx={{ mt: 1, width: '100%' }} />
                             </Grid>
                         </Grid>
                         <Button
@@ -183,14 +177,9 @@ function SignUp({history}) { //通过 props 接收 history 对象
                         </Grid>
                     </Box>
                 </Box>
-                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenSnackbar(false)} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
-                    <Alert onClose={() => setOpenSnackbar(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
-                        {snackbarMessage}
-                    </Alert>
-                </Snackbar>
             </Container>
         </ThemeProvider>
     );
 }
 
-export default withRouter(SignUp); // 使用 withRouter 高阶组件包装 SignUp 组件
+export default withRouter(SignUp);
