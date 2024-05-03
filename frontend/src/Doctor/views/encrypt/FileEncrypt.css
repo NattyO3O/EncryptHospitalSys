@@ -1,0 +1,17 @@
+/* FileEncrypt.css */
+.table-custom {
+    width: 100%;  /* 表格充满整个容器 */
+    border-collapse: collapse;  /* 边框合并为单一边框 */
+}
+
+.table-custom th, .table-custom td {
+    border: 1px solid #ccc;  /* 添加边框 */
+    padding: 10px;  /* 内部填充 */
+    text-align: left;  /* 默认左对齐文本 */
+}
+
+.table-custom th {
+    background-color: #3A77A8;  /* 蓝色背景 */
+    color: white;  /* 白色文字 */
+    text-align: center;  /* 表头文字居中 */
+}
