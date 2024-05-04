@@ -1,4 +1,4 @@
-import { loginUser } from '../api/auth';
+import {loginAdmin, loginUser} from '../api/auth';
 import {setMessage} from "./flash";
 
 export const setUser = (user) => ({
@@ -22,7 +22,26 @@ export const asyncSetUserObj = (credentials) => {
             })
             .catch(error => {
                 if (error.response && error.response.data) {
-                    dispatch(setMessage(error.response.data, 'error'));
+                    dispatch(setMessage(error.response.data.message, 'error'));
+                } else {
+                    dispatch(setMessage('网络错误，请重试。', 'error'));
+                }
+                throw error;
+            });
+    }
+}
+
+export const asyncSetAdminObj = (formData) => {
+    return (dispatch) => {
+        return loginAdmin(formData)
+            .then(response => {
+                dispatch(setUser(response.data));
+                dispatch(setMessage('登录成功，欢迎。', 'success'));
+                return response;
+            })
+            .catch(error => {
+                if (error.response && error.response.data) {
+                    dispatch(setMessage(error.response.data.message, 'error'));
                 } else {
                     dispatch(setMessage('网络错误，请重试。', 'error'));
                 }
