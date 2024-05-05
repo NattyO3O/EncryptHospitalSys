@@ -1,7 +1,5 @@
 package com.encrypt.hospital.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 
 @Entity

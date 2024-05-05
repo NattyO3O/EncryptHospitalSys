@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -34,8 +33,19 @@ public class DecryptController {
     public ResponseEntity<?> downloadFile(@PathVariable Long fileId, HttpServletResponse response) {
         try {
             EncryptFile file = decryptService.getFileById(fileId);
-            byte[] data = decryptService.decryptData(file);
+            String decryptedData = decryptService.decryptData(file);
+
+            if (decryptedData == null) {
+                // 解密失败
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+
+            // 将解密后的数据转换为字节数组
+            byte[] data = decryptedData.getBytes("UTF-8");
+
+            // 保存解密后的数据到文件
             decryptService.saveDecryptedDataToFile(file);
+
             // 设置响应头
             String headerValue = String.format("attachment; filename=\"%s\"", file.getFileName());
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION, headerValue);

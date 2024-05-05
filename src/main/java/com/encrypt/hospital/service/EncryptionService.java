@@ -2,28 +2,19 @@ package com.encrypt.hospital.service;
 
 import com.encrypt.hospital.model.EncryptFile;
 import com.encrypt.hospital.repository.EncryptedFileRepository;
+import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.engines.SM4Engine;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;
-import org.bouncycastle.crypto.paddings.PKCS7Padding;
-import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
-import org.quick.api.grpc.v1.SymAlg;
-import org.quick.api.grpc.v1.SymAlgPaddingMode;
-import org.quickssl.api.CryptoClient;
-import org.quickssl.api.CryptoHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Base64;
 
 import static org.quick.api.grpc.v1.SymAlg.QK_AES256;
@@ -38,7 +29,7 @@ public class EncryptionService {
     private EncryptedFileRepository encryptedFileRepository;
 
     // AES 加密
-    public byte[] encryptAES(byte[] data) throws Exception {
+    public static byte[] encryptAES(byte[] data) throws Exception {
         byte[] keyBytes = new byte[] {
                 (byte)0x00, (byte)0x01, (byte)0x02, (byte)0x03,
                 (byte)0x04, (byte)0x05, (byte)0x06, (byte)0x07,
@@ -64,45 +55,66 @@ public class EncryptionService {
         return cipher.doFinal(data);
     }
 
-    // SM4 加密
-    public byte[] encryptSM4(byte[] data) throws Exception {
-        // 固定的密钥值，这里是示例，请选择一个安全的方式生成密钥
-        byte[] keyBytes = {
-                (byte)0x12, (byte)0x34, (byte)0x56, (byte)0x78,
-                (byte)0x90, (byte)0xAB, (byte)0xCD, (byte)0xEF,
-                (byte)0xFE, (byte)0xDC, (byte)0xBA, (byte)0x98,
-                (byte)0x76, (byte)0x54, (byte)0x32, (byte)0x10
-        };
-        // 128位密钥 byte[] keyBytes = new byte[16];
-        //new SecureRandom().nextBytes(keyBytes);
-        //KeyParameter key = new KeyParameter(keyBytes);
+    public static byte[] encryptTextAES(String text) throws Exception {
+        return encryptAES(text.getBytes("UTF-8"));
+    }
 
-        SM4Engine engine = new SM4Engine();
-        CBCBlockCipher blockCipher = new CBCBlockCipher(engine);
-        PaddedBufferedBlockCipher paddedCipher = new PaddedBufferedBlockCipher(blockCipher, new PKCS7Padding()); // 添加填充
+    private static final byte[] keyBytes = {
+            (byte) 0x12, (byte) 0x34, (byte) 0x56, (byte) 0x78,
+            (byte) 0x90, (byte) 0xAB, (byte) 0xCD, (byte) 0xEF,
+            (byte) 0xFE, (byte) 0xDC, (byte) 0xBA, (byte) 0x98,
+            (byte) 0x76, (byte) 0x54, (byte) 0x32, (byte) 0x10
+    };
 
-        // 使用密钥和固定的初始化向量（在生产环境中，IV 也应该是安全随机的）
-        byte[] iv = new byte[16]; // 使用全零数组作为示例
-        ParametersWithIV params = new ParametersWithIV(new KeyParameter(keyBytes), iv);
-        paddedCipher.init(true, params); // true 表示加密
+    private static byte[] pad(byte[] input, int blockSize) {
+        int padLen = blockSize - (input.length % blockSize);
+        byte[] padded = new byte[input.length + padLen];
+        System.arraycopy(input, 0, padded, 0, input.length);
+        for (int i = input.length; i < padded.length; ++i) {
+            padded[i] = (byte) padLen;
+        }
+        return padded;
+    }
 
-        byte[] out = new byte[paddedCipher.getOutputSize(data.length)];
-        int length = paddedCipher.processBytes(data, 0, data.length, out, 0);
-        int finalLength = paddedCipher.doFinal(out, length);
+    public static byte[] encryptSM4(String plaintext) {
+        try {
+            byte[] iv = new byte[16];
+            new SecureRandom().nextBytes(iv);
+            SM4Engine sm4Engine = new SM4Engine();
+            CipherParameters ivAndKey = new ParametersWithIV(new KeyParameter(keyBytes), iv);
+            CBCBlockCipher cipher = new CBCBlockCipher(sm4Engine);
+            cipher.init(true, ivAndKey);
 
-        byte[] encryptedData = Arrays.copyOf(out, finalLength); // 仅保留实际使用的部分
-        return encryptedData;
+            byte[] plaintextBytes = plaintext.getBytes(StandardCharsets.UTF_8);
+            byte[] paddedPlaintext = pad(plaintextBytes, cipher.getBlockSize());
+            byte[] ciphertext = new byte[iv.length + paddedPlaintext.length];
+
+            // Encrypting the plaintext
+            int offset = 0;
+            while (offset < paddedPlaintext.length) {
+                cipher.processBlock(paddedPlaintext, offset, ciphertext, iv.length + offset);
+                offset += cipher.getBlockSize();
+            }
+
+            // Prefixing the IV to the ciphertext
+            System.arraycopy(iv, 0, ciphertext, 0, iv.length);
+            return ciphertext;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public String encryptFile(MultipartFile file, String algorithm) throws Exception {
 
         // 模拟文件加密，实际中应使用真正的加密库和算法，以下为伪代码
-        byte[] fileContent = file.getBytes(); // 获取文件内容
+        byte[] content = file.getBytes(); // 获取文件内容
+        String fileContent = new String(content);
         byte[] encryptedData; // 这里将是加密后的数据
 
         switch (algorithm) {
             case "AES":
-                encryptedData = encryptAES(fileContent);
+                encryptedData = encryptTextAES(fileContent);
                 System.out.println("加密结果为"+encryptedData);
                 break;
             case "SM4":
@@ -117,8 +129,8 @@ public class EncryptionService {
         return Base64.getEncoder().encodeToString(encryptedData);
     }
 
-    public EncryptFile saveEncryptedFile(String fileName, String algorithm, byte[] encryptedData) {
-        String base64EncodedEncryptedData = Base64.getEncoder().encodeToString(encryptedData);
+    public EncryptFile saveEncryptedFile(String fileName, String algorithm, String base64EncodedEncryptedData) {
+        //String base64EncodedEncryptedData = Base64.getEncoder().encodeToString(encryptedData);
         EncryptFile encryptedFile = new EncryptFile();
         encryptedFile.setFileName(fileName);
         encryptedFile.setAlgorithm(algorithm);

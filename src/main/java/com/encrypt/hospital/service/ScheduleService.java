@@ -1,7 +1,6 @@
 package com.encrypt.hospital.service;
 
 import com.encrypt.hospital.model.DutySchedule;
-import com.encrypt.hospital.model.DutySchedule;
 import com.encrypt.hospital.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
