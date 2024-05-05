@@ -31,6 +31,7 @@ const FileEncrypt = () => {
                 }
             });
             setEncryptedData(response.data);
+            alert('文件加密成功！');
         } catch (error) {
             console.error('加密错误:', error);
         }

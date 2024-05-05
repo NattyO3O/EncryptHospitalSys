@@ -4,29 +4,31 @@ import com.encrypt.hospital.model.Doctor;
 import com.encrypt.hospital.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DoctorService {
+
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public List<Doctor> findAllDoctors() {
-        return doctorRepository.findAll();
+    public Doctor getDoctorDetails(int userId) {
+        return doctorRepository.findByUserId(userId);
     }
 
-    public Doctor saveDoctor(Doctor doctor) {
-        return doctorRepository.save(doctor);
-    }
-
-    public void deleteDoctor(int id) {
-        doctorRepository.deleteById(id);
-    }
-
-    public Doctor findDoctorById(int id) {
-        Optional<Doctor> doctor = doctorRepository.findById(id);
-        return doctor.orElse(null);  // 返回 Doctor 或 null
+    @Transactional
+    public void updateDoctorDetails(Doctor updatedDoctor) {
+        Doctor doctor = doctorRepository.findByUserId(updatedDoctor.getUserId());
+        if (doctor != null) {
+            doctor.setDocName(updatedDoctor.getDocName());
+            doctor.setDepartment(updatedDoctor.getDepartment());
+            doctor.setTitle(updatedDoctor.getTitle());
+            doctor.setEmail(updatedDoctor.getEmail());
+            doctor.setPhoneNumber(updatedDoctor.getPhoneNumber());
+            doctor.setProfile(updatedDoctor.getProfile());
+            doctorRepository.save(doctor);
+        } else {
+            throw new IllegalStateException("No doctor found with the user ID: " + updatedDoctor.getUserId());
+        }
     }
 }

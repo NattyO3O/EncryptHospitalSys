@@ -3,50 +3,41 @@ package com.encrypt.hospital.controller;
 import com.encrypt.hospital.model.Doctor;
 import com.encrypt.hospital.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000")  // 允许前端端口 3000 的跨域请求
 @RestController
-@RequestMapping("/api/doctors")
+@RequestMapping("/api/doctor")
 public class DoctorController {
+
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping
-    public List<Doctor> getAllDoctors() {
-        return doctorService.findAllDoctors();
+    @GetMapping("/details/{userId}")
+    public ResponseEntity<Doctor> getDoctorDetails(@PathVariable int userId) {
+        return ResponseEntity.ok(doctorService.getDoctorDetails(userId));
     }
 
-    @PostMapping
-    public Doctor addDoctor(@RequestBody Doctor doctor) {
-        doctor.setUserId(1);  // 设置一个固定的 UserID, 适用于测试
-        return doctorService.saveDoctor(doctor);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteDoctor(@PathVariable int id) {
-        doctorService.deleteDoctor(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Doctor> updateDoctor(@PathVariable int id, @RequestBody Doctor doctorDetails) {
-        Doctor doctor = doctorService.findDoctorById(id);
-        if (doctor == null) {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/update")
+    public ResponseEntity<?> updateDoctorDetails(@RequestBody Map<String, Object> payload) {
+        try {
+            int userId = (int) payload.get("userId");
+            Map<String, String> values = (Map<String, String>) payload.get("values");
+            Doctor doctor = new Doctor();
+            doctor.setUserId(userId);
+            doctor.setDocName(values.get("docName"));
+            doctor.setDepartment(values.get("department"));
+            doctor.setTitle(values.get("title"));
+            doctor.setEmail(values.get("email"));
+            doctor.setPhoneNumber(values.get("phoneNumber"));
+            doctor.setProfile(values.get("profile"));
+            doctorService.updateDoctorDetails(doctor);
+            return ResponseEntity.ok("个人信息修改成功");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新失败: " + e.getMessage());
         }
-        doctor.setDocName(doctorDetails.getDocName());
-        doctor.setDepartment(doctorDetails.getDepartment());
-        doctor.setTitle(doctorDetails.getTitle());
-        doctor.setEmail(doctorDetails.getEmail());
-        doctor.setPhoneNumber(doctorDetails.getPhoneNumber());
-        doctor.setProfile(doctorDetails.getProfile());
-
-        Doctor updatedDoctor = doctorService.saveDoctor(doctor);
-        return ResponseEntity.ok(updatedDoctor);
     }
-
 }

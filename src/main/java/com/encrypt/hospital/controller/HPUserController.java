@@ -53,13 +53,7 @@ public class HPUserController {
         System.out.println("接收到来自用户的登录请求: " + loginRequest.getUserName());
         try {
             HpUser user = userService.loginUser(loginRequest.getUserName(), loginRequest.getPassWord());
-            String token = generateToken(user);
-            Map<String, Object> tokenMap = new HashMap<>();
-            tokenMap.put("userName", user.getUserName());
-            tokenMap.put("userId", user.getUserID());
-            tokenMap.put("userType", user.getType());
-            tokenMap.put("token", token);
-            return ResponseEntity.ok(tokenMap);
+            return getResponseEntity(user);
         } catch (IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -76,18 +70,22 @@ public class HPUserController {
                 return ResponseEntity.badRequest().body("证书文件不能为空");
             }
             HpUser user = userService.loginAdmin(username, password, certificate, p7b);
-            String token = generateToken(user);
-            Map<String, Object> tokenMap = new HashMap<>();
-            tokenMap.put("userName", user.getUserName());
-            tokenMap.put("userId", user.getUserID());
-            tokenMap.put("userType", user.getType());
-            tokenMap.put("token", token);
-            return ResponseEntity.ok(tokenMap);
+            return getResponseEntity(user);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("文件读取失败: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    private ResponseEntity<?> getResponseEntity(HpUser user) {
+        String token = generateToken(user);
+        Map<String, Object> tokenMap = new HashMap<>();
+        tokenMap.put("userName", user.getUserName());
+        tokenMap.put("userId", user.getUserID());
+        tokenMap.put("userType", user.getType());
+        tokenMap.put("token", token);
+        return ResponseEntity.ok(tokenMap);
     }
 
     @GetMapping("/validateToken")

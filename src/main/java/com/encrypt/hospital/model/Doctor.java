@@ -1,30 +1,34 @@
 package com.encrypt.hospital.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Doctor")
+@Table(name = "doctor")
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int docId;
+    private int DocID;
+    @Column(name="UserID")
     private int userId;
+    @Column(name="DocName")
     private String docName;
+    @Column(name="Department")
     private String department;
+    @Column(name="Title")
     private String title;
+    @Column(name="Email")
     private String email;
+    @Column(name="PhoneNumber")
     private String phoneNumber;
-    @Column(length = 1024)
+    @Column(name="Profile")
     private String profile;
 
-    public int getDocId() {
-        return docId;
+    public int getDocID() {
+        return DocID;
     }
 
-    public void setDocId(int docId) {
-        this.docId = docId;
+    public void setDocID(int DocID) {
+        this.DocID = DocID;
     }
 
     public int getUserId() {

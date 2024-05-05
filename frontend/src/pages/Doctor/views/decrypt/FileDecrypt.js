@@ -52,9 +52,6 @@ const FileDecrypt = () => {
         }
     };
 
-
-
-
     return (
         <div className="file-decrypt-container">
             <input

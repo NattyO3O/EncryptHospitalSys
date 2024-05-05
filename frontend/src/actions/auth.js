@@ -29,8 +29,9 @@ export const asyncSetUserObj = (fromData) => {
                 return response;
             })
             .catch(error => {
-                console.error('Login failed:', error);
-                dispatch(setMessage('Login failed: ' + error.message, 'error'));
+                const errorMessage = error.response ? error.response.data : error.message;
+                console.error('Login failed:', errorMessage);
+                dispatch(setMessage( errorMessage, 'error'));
                 throw error;
             });
     }
@@ -53,8 +54,9 @@ export const asyncSetAdminObj = (formData) => {
                 return response;
             })
             .catch(error => {
-                console.error('Admin Login failed:', error);
-                dispatch(setMessage('Admin Login failed: ' + error.message, 'error'));
+                const errorMessage = error.response ? error.response.data : error.message;
+                console.error('Login failed:', errorMessage);
+                dispatch(setMessage(errorMessage, 'error'));
                 throw error;
             });
     }
