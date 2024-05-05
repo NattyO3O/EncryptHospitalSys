@@ -23,11 +23,6 @@ const menuList = [
         icon:<CalendarOutlined />
     },
     {
-        key:"/docSandBox/docManagement",
-        title:"诊断管理",
-        icon:<MedicineBoxOutlined />
-    },
-    {
         key:"/docSandBox/docList",
         title:"个人信息管理",
         icon:<ContactsOutlined />

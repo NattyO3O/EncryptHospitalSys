@@ -8,8 +8,10 @@ const auth = (state=userState, action) =>{
         case "setUser":
             return{
                 ...state,
-                user: action.user,
-                error: null
+                userName: action.user.userName,
+                userId: action.user.userId,
+                token: action.user.token,
+                isAuthenticated: true
             }
         case "loginError":
             return {

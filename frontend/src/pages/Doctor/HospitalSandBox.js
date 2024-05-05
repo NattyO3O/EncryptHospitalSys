@@ -6,7 +6,6 @@ import './HospitalSandBox.css'
 import {Route, Switch} from "react-router-dom";
 import DoctorHome from "./views/home/DoctorHome";
 import DoctorDuty from "./views/duty/DoctorDuty";
-import DManagement from "./views/management/DManagement";
 import DoctorList from "./views/list/DoctorList";
 import FileEncrypt from "./views/encrypt/FileEncrypt";
 const {Content} = Layout
@@ -28,9 +27,9 @@ export default function HospitalSandBox(){
                     <Switch>
                         <Route path="/docSandBox/docHome" component={DoctorHome} />
                         <Route path="/docSandBox/docDuty" component={DoctorDuty} />
-                        <Route path="/docSandBox/docManagement" component={DManagement} />
                         <Route path="/docSandBox/docList" component={DoctorList} />
                         <Route path="/docSandBox/docEncrypt" component={FileEncrypt} />
+                        <Route path="/docSandBox/docDecrypt" component={FileDecrypt}/>
                     </Switch>
                 </Content>
             </Layout>
