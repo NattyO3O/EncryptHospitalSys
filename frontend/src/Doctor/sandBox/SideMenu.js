@@ -6,8 +6,8 @@ import Icon, {
     UserOutlined,
     CalendarOutlined,
     ContactsOutlined,
-    MedicineBoxOutlined
-
+    CloudUploadOutlined,
+    CloudDownloadOutlined
 } from '@ant-design/icons';
 import {withRouter} from "react-router-dom";
 import SubMenu from "antd/es/menu/SubMenu";
@@ -25,19 +25,19 @@ const menuList = [
         icon:<CalendarOutlined />
     },
     {
-        key:"/management",
-        title:"诊断管理",
-        icon:<MedicineBoxOutlined />
+        key:"/encrypt",
+        title:"病历上传",
+        icon:<CloudUploadOutlined />
+    },
+    {
+        key:"/decrypt",
+        title:"病历下载",
+        icon:<CloudDownloadOutlined />
     },
     {
         key:"/list",
         title:"个人信息管理",
         icon:<ContactsOutlined />
-    },
-    {
-        key:"/encrypt",
-        title:"病历共享",
-        icon:<file />
     }
 ]
 

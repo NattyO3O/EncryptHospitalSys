@@ -53,7 +53,21 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.quickssl</groupId>
+            <artifactId>quickapi-client-java</artifactId>
+            <version>1.1.2-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/lib/quickapi-client-java-1.1.2-SNAPSHOT-jar-with-dependencies.jar</systemPath>
+        </dependency>
+        <!-- Bouncy Castle -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.68</version>
+        </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>

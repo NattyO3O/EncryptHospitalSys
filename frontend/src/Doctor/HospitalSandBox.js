@@ -4,11 +4,11 @@ import SideMenu from "./sandBox/SideMenu"
 import TopHeader from "./sandBox/TopHeader"
 import DoctorList from "./views/list/DoctorList";
 import DoctorDuty from "./views/duty/DoctorDuty";
-import DManagement from "./views/management/DManagement";
 import {Route, Switch} from "react-router-dom";
 import './HospitalSandBox.css'
 import DoctorHome from "./views/home/DoctorHome";
 import FileEncrypt from "./views/encrypt/FileEncrypt";
+import FileDecrypt from "./views/decrypt/FileDecrypt";
 const {Content} = Layout
 
 
@@ -29,9 +29,9 @@ export default function HospitalSandBox(){
                     <Switch>
                         <Route path="/home" component={DoctorHome}/>
                         <Route path="/duty" component={DoctorDuty}/>
-                        <Route path="/management" component={DManagement}/>
-                        <Route path="/list" component={DoctorList}/>
                         <Route path="/encrypt" component={FileEncrypt}/>
+                        <Route path="/decrypt" component={FileDecrypt}/>
+                        <Route path="/list" component={DoctorList}/>
                     </Switch>
                 </Content>
             </Layout>

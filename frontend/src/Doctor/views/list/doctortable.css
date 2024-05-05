@@ -5,13 +5,15 @@
     margin: 20px 0;
 }
 
-.table-custom th, .table-custom td {
+.container .table-custom th,.container .table-custom td {
     border: 1px solid #ddd;
     text-align: center;
     padding: 8px;
     font-family: Arial, sans-serif;
     font-size: 15px;
 }
+
+
 
 /* 表头样式 */
 .table-custom thead th {
