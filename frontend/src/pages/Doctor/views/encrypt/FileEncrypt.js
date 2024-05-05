@@ -37,17 +37,31 @@ const FileEncrypt = () => {
     };
 
     const handleUpload = async () => {
+        if (!encryptedData) {
+            alert('请先加密文件！');
+            return;
+        }
+        const formData = new FormData();
+        formData.append('fileName', file.name);
+        formData.append('algorithm', algorithm);
+        formData.append('encryptedData', encryptedData);
+
         try {
-            await axios.post('http://localhost:8080/api/upload', { data: encryptedData });
+            const response = await axios.post('http://localhost:8080/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             alert('文件上传成功！');
         } catch (error) {
             console.error('上传错误:', error);
         }
     };
 
+
     return (
         <div className="container mt-5">
-            <table className="table-custom">
+            <table className="table-encrypt">
                 <tbody>
                 <tr>
                     <th>选择文件</th>
@@ -61,7 +75,6 @@ const FileEncrypt = () => {
                     <th>选择加密算法</th>
                     <td>
                         <select value={algorithm} onChange={handleAlgorithmChange}>
-                            <option value="3DES">3DES</option>
                             <option value="AES">AES</option>
                             <option value="SM4">SM4</option>
                         </select>
@@ -70,7 +83,7 @@ const FileEncrypt = () => {
                 </tr>
                 </tbody>
             </table>
-            <button onClick={handleUpload} style={{ float: 'right', backgroundColor: '#3A77A8', color: 'white', marginTop: '10px', fontSize:"16px", borderColor: '#3A77A8'}}>上传</button>
+            <button onClick={handleUpload} style={{ float: 'right', backgroundColor: '#3A77A8', color: 'white', marginTop: '10px', fontSize:'17px', borderRadius:'4px',borderColor:'#3A77A8'}}>上传</button>
         </div>
     );
 };

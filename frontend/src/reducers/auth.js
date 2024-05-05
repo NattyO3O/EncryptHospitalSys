@@ -10,6 +10,7 @@ const auth = (state=userState, action) =>{
                 ...state,
                 userName: action.user.userName,
                 userId: action.user.userId,
+                userType: action.user.userType,
                 token: action.user.token,
                 isAuthenticated: true
             }

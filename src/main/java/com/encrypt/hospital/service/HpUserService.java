@@ -24,7 +24,7 @@ public class HpUserService {
             throw new IllegalStateException("用户名已存在");
         }
         //user.setPassWord(passwordEncoder.encode(user.getPassWord()));
-        user.setType("Doctor");
+        user.setType("Patient");
         return userRepository.save(user);
     }
 

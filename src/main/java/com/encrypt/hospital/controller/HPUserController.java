@@ -41,6 +41,7 @@ public class HPUserController {
                 .setSubject(user.getUserName())
                 .claim("userId", user.getUserID())
                 .claim("userName", user.getUserName())
+                .claim("userType", user.getType())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + 1800000)) // 设置30分钟过期
                 .signWith(SignatureAlgorithm.HS256, "hospital") // 使用密钥
@@ -56,6 +57,7 @@ public class HPUserController {
             Map<String, Object> tokenMap = new HashMap<>();
             tokenMap.put("userName", user.getUserName());
             tokenMap.put("userId", user.getUserID());
+            tokenMap.put("userType", user.getType());
             tokenMap.put("token", token);
             return ResponseEntity.ok(tokenMap);
         } catch (IllegalStateException e) {
@@ -78,6 +80,7 @@ public class HPUserController {
             Map<String, Object> tokenMap = new HashMap<>();
             tokenMap.put("userName", user.getUserName());
             tokenMap.put("userId", user.getUserID());
+            tokenMap.put("userType", user.getType());
             tokenMap.put("token", token);
             return ResponseEntity.ok(tokenMap);
         } catch (IOException e) {
@@ -102,9 +105,11 @@ public class HPUserController {
                     .getBody();
             System.out.println("Parsed userName: " + claims.get("userName"));
             System.out.println("Parsed userId: " + claims.get("userId"));
+            System.out.println("Parsed userType: " + claims.get("userType"));
             HashMap<String, Object> userInfo = new HashMap<>();
             userInfo.put("userName", claims.get("userName"));
             userInfo.put("userId", claims.get("userId"));
+            userInfo.put("userType", claims.get("userType"));
             userInfo.put("token", token);
             System.out.println("token验证成功");
             return ResponseEntity.ok(userInfo);

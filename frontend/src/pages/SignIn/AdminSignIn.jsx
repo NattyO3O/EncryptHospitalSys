@@ -3,7 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { Link as RouterLink } from 'react-router-dom';
+import {Link as RouterLink, useHistory} from 'react-router-dom';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import { asyncSetAdminObj } from "../../actions/auth";
 import {IconButton, InputAdornment} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
@@ -20,7 +20,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const defaultTheme = createTheme();
 
-function AdminSignIn({ asyncSetAdminObj, history }) {
+function AdminSignIn({ asyncSetAdminObj }) {
+    const history = useHistory();
     const [userName, setUserName] = useState('');
     const [passWord, setPassWord] = useState('');
     const [certificate, setCertificate] = useState(null);
@@ -64,8 +65,16 @@ function AdminSignIn({ asyncSetAdminObj, history }) {
         formData.append('p7b', p7b);
 
         try {
-            await asyncSetAdminObj(formData);
-            history.push('/docSandBox');
+            const userData = await asyncSetAdminObj(formData);
+            if (userData && userData.userType) {
+                if (userData.userType === 'Admin') {
+                    history.push('/adminSandBox');
+                } else if (userData.userType === 'Doctor') {
+                    history.push('/docSandBox');
+                }
+            } else {
+                console.error('Unexpected user data structure:', userData);
+            }
         } catch (error) {
             console.error('Admin Login failed:', error.message);
         }

@@ -8,6 +8,7 @@ import DoctorHome from "./views/home/DoctorHome";
 import DoctorDuty from "./views/duty/DoctorDuty";
 import DoctorList from "./views/list/DoctorList";
 import FileEncrypt from "./views/encrypt/FileEncrypt";
+import FileDecrypt from "./views/decrypt/FileDecrypt";
 const {Content} = Layout
 
 export default function HospitalSandBox(){
@@ -25,7 +26,7 @@ export default function HospitalSandBox(){
                         minHeight: 280,
                     }}>
                     <Switch>
-                        <Route path="/docSandBox/docHome" component={DoctorHome} />
+                        <Route exact path="/docSandBox/" component={DoctorHome} />
                         <Route path="/docSandBox/docDuty" component={DoctorDuty} />
                         <Route path="/docSandBox/docList" component={DoctorList} />
                         <Route path="/docSandBox/docEncrypt" component={FileEncrypt} />
