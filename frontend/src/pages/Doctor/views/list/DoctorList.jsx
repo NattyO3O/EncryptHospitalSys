@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Button, Select, message } from 'antd';
+import { Form, Input, Select} from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDoctorDetails, updateDoctorDetails } from '../../../../api/DocInfo';
 import {setMessage} from "../../../../actions/flash";
@@ -41,7 +41,7 @@ const DoctorList = () => {
 
     return (
         <div style={{ padding: '2px' }}>
-            <Form form={form} layout="vertical" onFinish={handleSubmit}>
+            <Form form={form} layout="vertical" onFinish={handleSubmit} >
                 <Form.Item
                     label="姓名"
                     name="docName"
@@ -91,14 +91,12 @@ const DoctorList = () => {
                     name="profile"
                     rules={[{ required: true, message: '请输入个人简介' }]}
                 >
-                    <Input.TextArea rows={4} placeholder="请输入个人简介" />
-                </Form.Item>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        提交
-                    </Button>
+                    <Input.TextArea rows={2} placeholder="请输入个人简介" />
                 </Form.Item>
             </Form>
+            <button type="primary" htmlType="submit" style={{ float: 'right', backgroundColor: '#3A77A8', color: 'white', fontSize:'17px', borderRadius:'4px',borderColor:'#3A77A8'}}>
+                提交
+            </button>
         </div>
     );
 };

@@ -6,7 +6,7 @@ import SignInSide from "../pages/SignIn/SignInSide"
 import AdminSignIn from "../pages/SignIn/AdminSignIn"
 import PopMessage from "../components/popMessage";
 import HospitalSandBox from "../pages/Doctor/HospitalSandBox";
-import AdminSandbox from "../pages/Admin/AdminSandbox";
+import AdminSandbox from "../pages/Admin/AdminSandBox";
 
 export default class index extends Component{
     render(){

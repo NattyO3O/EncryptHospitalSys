@@ -68,9 +68,9 @@ function AdminSignIn({ asyncSetAdminObj }) {
             const userData = await asyncSetAdminObj(formData);
             if (userData && userData.userType) {
                 if (userData.userType === 'Admin') {
-                    history.push('/adminSandBox');
+                    history.push('/adminSandBox/');
                 } else if (userData.userType === 'Doctor') {
-                    history.push('/docSandBox');
+                    history.push('/docSandBox/');
                 }
             } else {
                 console.error('Unexpected user data structure:', userData);

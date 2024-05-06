@@ -4,7 +4,7 @@ import { UserOutlined, MedicineBoxOutlined } from '@ant-design/icons';
 
 const DoctorHome = () => {
     return (
-        <div style={{ background: '#ececec', padding: '30px' }}>
+        <div style={{ padding: '30px' }}>
             <Row gutter={16}>
                 <Col span={12}>
                     <Card style={{

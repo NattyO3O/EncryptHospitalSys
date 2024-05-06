@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.encrypt.hospital.util.cerUtil.verifyCertificate;
 
 @Service
@@ -66,5 +68,31 @@ public class HpUserService {
             }
         }
         return user;
+    }
+
+    public HpUser save(HpUser user) {
+        return userRepository.save(user);
+    }
+
+    // Fetch all admin users
+    public List<HpUser> getAllAdmins() {
+        return userRepository.findByType("Admin");
+    }
+
+    // Add a new admin user
+    public void addAdmin(String username, String password) {
+        if (userRepository.findByUserName(username) != null) {
+            throw new IllegalStateException("用户名已存在");
+        }
+        HpUser newAdmin = new HpUser();
+        newAdmin.setUserName(username);
+        newAdmin.setPassWord(password);
+        newAdmin.setType("Admin");
+        userRepository.save(newAdmin);
+    }
+
+    // Delete a user by ID
+    public void deleteUserById(int userID) {
+        userRepository.deleteById(userID);
     }
 }
