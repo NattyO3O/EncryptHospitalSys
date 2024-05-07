@@ -3,13 +3,17 @@ import {Table, Space, Modal, Form, Input, message, Button} from 'antd';
 import * as api from '../../../../api/manage';
 
 class RegDoc extends Component {
-    state = {
-        dataSource: [],
-        loading: true,
-        isModalVisible: false,
-        modalType: '', // 'add' or 'edit'
-        editingRecord: null,
-    };
+    constructor(props) {
+        super(props);
+        this.formRef = React.createRef();  // 创建表单引用
+        this.state = {
+            dataSource: [],
+            loading: true,
+            isModalVisible: false,
+            modalType: '', // 'add' or 'edit'
+            editingRecord: null,
+        };
+    }
 
     componentDidMount() {
         this.loadDoctors();
@@ -31,9 +35,23 @@ class RegDoc extends Component {
         }
     };
 
-    // Show the modal for editing or adding
     handleModalShow = (type, record = null) => {
-        this.setState({ isModalVisible: true, modalType: type, editingRecord: record });
+        this.setState({ isModalVisible: true, modalType: type, editingRecord: record }, () => {
+            // 当状态更新后并且是编辑模式，设置表单值
+            if (type === 'edit' && record) {
+                this.formRef.current.setFieldsValue({
+                    docName: record.docName,
+                    department: record.department,
+                    title: record.title,
+                    email: record.email,
+                    phoneNumber: record.phoneNumber,
+                    profile: record.profile
+                });
+            } else {
+                // 清除表单值
+                this.formRef.current.resetFields();
+            }
+        });
     };
 
     handleModalCancel = () => {
@@ -76,14 +94,10 @@ class RegDoc extends Component {
         }
     };
 
-    // Render the modal form based on the current editing state
     renderModalContent = () => {
-        const { modalType, editingRecord } = this.state;
-        const initialValues = modalType === 'edit' ? editingRecord : { username: '', password: '' };
-
         return (
-            <Form layout="vertical" onFinish={this.handleSubmit} initialValues={initialValues}>
-                {modalType === 'add' && (
+            <Form layout="vertical" onFinish={this.handleSubmit} ref={this.formRef}>
+                {this.state.modalType === 'add' && (
                     <>
                         <Form.Item name="username" label="用户名" rules={[{ required: true, message: '请输入用户名' }]}>
                             <Input />
@@ -93,7 +107,8 @@ class RegDoc extends Component {
                         </Form.Item>
                     </>
                 )}
-                {modalType === 'edit' && (
+                {this.state.modalType === 'edit' && (
+                    // 移除 initialValues 使用 setFieldsValue 动态设置
                     <>
                         <Form.Item name="docName" label="医生姓名" rules={[{ required: true, message: '请输入医生姓名' }]}>
                             <Input />

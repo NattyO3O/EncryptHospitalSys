@@ -33,7 +33,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -61,6 +61,9 @@
       "localhost",
       ".localhost"
     ],
-    "proxy": "https://localhost:8080/"
+    "proxy": "https://localhost:8443/"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

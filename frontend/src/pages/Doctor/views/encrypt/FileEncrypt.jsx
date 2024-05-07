@@ -25,7 +25,7 @@ const FileEncrypt = () => {
         formData.append('algorithm', algorithm);
 
         try {
-            const response = await axios.post('http://localhost:8080/api/encrypt', formData, {
+            const response = await axios.post('https://localhost:8443/api/encrypt', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -48,7 +48,7 @@ const FileEncrypt = () => {
         formData.append('encryptedData', encryptedData);
 
         try {
-            const response = await axios.post('http://localhost:8080/api/upload', formData, {
+            const response = await axios.post('https://localhost:8443/api/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

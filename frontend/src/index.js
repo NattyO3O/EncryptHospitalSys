@@ -10,7 +10,7 @@ const loadUserFromToken = async () => {
     const token = localStorage.getItem('token');
     if (token) {
         try {
-            const response = await axios.get('http://localhost:8080/api/validateToken', {
+            const response = await axios.get('https://localhost:8443/api/validateToken', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             store.dispatch(setUser(response.data));

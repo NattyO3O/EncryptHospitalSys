@@ -24,6 +24,7 @@ public class HPUserController {
     @Autowired
     private HpUserService userService;
 
+    @CrossOrigin(origins = "https://localhost:3000")
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody HpUser user) {
         try {

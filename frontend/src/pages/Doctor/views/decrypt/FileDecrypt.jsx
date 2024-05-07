@@ -9,7 +9,7 @@ const FileDecrypt = () => {
     const handleSearch = async () => {
         const encodedFileName = encodeURIComponent(fileName);  // 编码文件名以确保URL的正确性
         try {
-            const response = await axios.get(`http://localhost:8080/api/decrypt/files?fileName=${encodedFileName}`);
+            const response = await axios.get(`https://localhost:8443/api/decrypt/files?fileName=${encodedFileName}`);
             setFiles(response.data);
             console.log(response.data);
         } catch (error) {
@@ -21,7 +21,7 @@ const FileDecrypt = () => {
 
     const handleDownload = async (fileId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/decrypt/download/${fileId}`, { responseType: 'blob' });
+            const response = await axios.get(`https://localhost:8443/api/decrypt/download/${fileId}`, { responseType: 'blob' });
             if (response.data.size > 0) {
                 const contentDisposition = response.headers['content-disposition'];
                 if (contentDisposition) {
