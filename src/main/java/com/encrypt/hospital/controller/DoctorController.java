@@ -16,18 +16,18 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping("/details/{userId}")
-    public ResponseEntity<Doctor> getDoctorDetails(@PathVariable int userId) {
-        return ResponseEntity.ok(doctorService.getDoctorDetails(userId));
+    @GetMapping("/details/{userID}")
+    public ResponseEntity<Doctor> getDoctorDetails(@PathVariable int userID) {
+        return ResponseEntity.ok(doctorService.getDoctorDetails(userID));
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateDoctorDetails(@RequestBody Map<String, Object> payload) {
         try {
-            int userId = (int) payload.get("userId");
+            int userID = (int) payload.get("userId");
             Map<String, String> values = (Map<String, String>) payload.get("values");
             Doctor doctor = new Doctor();
-            doctor.setUserId(userId);
+            doctor.setUserID(userID);
             doctor.setDocName(values.get("docName"));
             doctor.setDepartment(values.get("department"));
             doctor.setTitle(values.get("title"));

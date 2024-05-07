@@ -1,0 +1,17 @@
+/* 在此处定义患者挂号表格容器样式 */
+.patient-register-table-container.ant-table-cell{
+    max-height: 550px; /* 根据需求设置合适的最大高度 */
+    overflow-y: auto; /* 启用纵向滚动条 */
+    padding-right: 1rem; /* 防止表格内容过于紧凑 */
+    text-align: center; /* 居中显示所有单元格内容 */
+}
+
+
+
+.ant-table-thead > tr > th {
+    text-align: center; /* 表头居中对齐 */
+}
+
+.ant-table-row-expand-icon-cell {
+    padding: 0 12px; /* 根据需要调整展开图标的位置 */
+}

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import { Form, Input, Button, Select } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDoctorDetails, updateDoctorDetails } from '../../../../api/DocInfo';
 import {setMessage} from "../../../../actions/flash";
+import {fetchPatientDetails, updatePatientDetails} from "../../../../api/PatInfo";
 
 const { Option } = Select;
 
-const DoctorList = () => {
+const PatientList = () => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const userId = useSelector(state => state.auth.userId);
@@ -14,10 +14,10 @@ const DoctorList = () => {
     useEffect(() => {
         console.log("Current userId: ", userId);
         if (userId) {
-            fetchDoctorDetails(userId)
+            fetchPatientDetails(userId)
                 .then(response => {
                     form.setFieldsValue(response.data);
-                    dispatch({ type: 'setDoc', doc: { docId: response.data.docID } });
+                    dispatch({ type: 'setPat', pat: { patId: response.data.patId } });
                 })
                 .catch(error => {
                     const errorMessage = error.response ? error.response.data : error.message;
@@ -29,8 +29,8 @@ const DoctorList = () => {
     }, [userId, dispatch]);
 
     const handleSubmit = (values) => {
-        const updatedDoctor = { values, userId};
-        updateDoctorDetails(updatedDoctor)
+        const updatedPatient ={values, userId};
+        updatePatientDetails(updatedPatient)
             .then(() => {
                 dispatch(setMessage( "个人信息修改成功", 'success'));
             })
@@ -44,40 +44,27 @@ const DoctorList = () => {
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
                 <Form.Item
                     label="姓名"
-                    name="docName"
+                    name="patName"
                     rules={[{ required: true, message: '请输入姓名' }]}
                 >
                     <Input placeholder="请输入姓名" />
                 </Form.Item>
                 <Form.Item
-                    label="科室"
-                    name="department"
-                    rules={[{ required: true, message: '请选择科室' }]}
+                    label="性别"
+                    name="sex"
+                    rules={[{ required: true, message: '请选择性别' }]}
                 >
-                    <Select placeholder="请选择科室">
-                        <Option value="内科">内科</Option>
-                        <Option value="外科">外科</Option>
-                        <Option value="中医">中医</Option>
-                        <Option value="儿科">儿科</Option>
+                    <Select placeholder="请选择性别">
+                        <Option value="Male">男</Option>
+                        <Option value="Female">女</Option>
                     </Select>
                 </Form.Item>
                 <Form.Item
-                    label="职位"
-                    name="title"
-                    rules={[{ required: true, message: '请选择职位' }]}
+                    label="年龄"
+                    name="age"
+                    rules={[{ required: true, message: '请输入年龄' }]}
                 >
-                    <Select placeholder="请选择职位">
-                        <Option value="主任医师">主任医师</Option>
-                        <Option value="副主任医师">副主任医师</Option>
-                        <Option value="主治医师">主治医师</Option>
-                    </Select>
-                </Form.Item>
-                <Form.Item
-                    label="邮箱"
-                    name="email"
-                    rules={[{ required: true, type: 'email', message: '请输入有效的邮箱' }]}
-                >
-                    <Input placeholder="请输入邮箱" />
+                    <Input placeholder="请输入年龄" />
                 </Form.Item>
                 <Form.Item
                     label="电话"
@@ -87,14 +74,14 @@ const DoctorList = () => {
                     <Input placeholder="请输入电话号码" />
                 </Form.Item>
                 <Form.Item
-                    label="简介"
-                    name="profile"
-                    rules={[{ required: true, message: '请输入个人简介' }]}
+                    label="身份证"
+                    name="nationId"
+                    rules={[{ required: true, message: '请输入身份证号码' }]}
                 >
-                    <Input.TextArea rows={4} placeholder="请输入个人简介" />
+                    <Input placeholder="请输入身份证号码" />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" style={{backgroundColor:"#3A77A8"}}>
                         提交
                     </Button>
                 </Form.Item>
@@ -103,4 +90,4 @@ const DoctorList = () => {
     );
 };
 
-export default DoctorList;
+export default PatientList;
