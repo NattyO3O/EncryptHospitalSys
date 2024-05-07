@@ -12,7 +12,7 @@ public class EncryptFile {
     private Long fileId;
 
     @Column(name = "UserID")
-    private Integer userId;
+    private Integer userID;
 
     @Column(name = "DocID")
     private Integer docId;
@@ -36,12 +36,12 @@ public class EncryptFile {
         this.fileId = fileId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getUserID() {
+        return userID;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
     public Integer getDocId() {

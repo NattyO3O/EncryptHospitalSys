@@ -7,6 +7,7 @@ import AdminSignIn from "../pages/SignIn/AdminSignIn"
 import PopMessage from "../components/popMessage";
 import HospitalSandBox from "../pages/Doctor/HospitalSandBox";
 import AdminSandbox from "../pages/Admin/AdminSandBox";
+import patientSandBox from "../pages/Patient/patientSandBox";
 
 export default class index extends Component{
     render(){
@@ -20,6 +21,7 @@ export default class index extends Component{
                     <Route path="/adminSignIn" component={ AdminSignIn } />
                     <Route path="/docSandBox" component={HospitalSandBox} />
                     <Route path="/adminSandBox" component={AdminSandbox} />
+                    <Route path="/patSandBox" component={patientSandBox}/>
                 </Switch>
             </Router>
         )

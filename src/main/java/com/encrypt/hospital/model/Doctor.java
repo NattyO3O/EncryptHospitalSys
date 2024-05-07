@@ -9,7 +9,7 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int DocID;
     @Column(name="UserID")
-    private int userId;
+    private int userID;
     @Column(name="DocName")
     private String docName;
     @Column(name="Department")
@@ -31,12 +31,12 @@ public class Doctor {
         this.DocID = DocID;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getDocName() {

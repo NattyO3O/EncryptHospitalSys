@@ -7,7 +7,7 @@ const patient = (state=patientState, action) =>{
         case "setPatient":
             return{
                 ...state,
-                patientId: action.pat.patientId
+                pat: action.pat
             }
         default:
             return state;

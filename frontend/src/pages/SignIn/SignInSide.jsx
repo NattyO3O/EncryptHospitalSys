@@ -40,7 +40,7 @@ function SignInSide({ asyncSetUserObj, history }) {
             passWord: passWord
         }).then(res => {
             console.log('User logged:', res);
-            history.push('/docSandBox'); // 跳转到管理页面
+            history.push('/patSandBox'); // 跳转到管理页面
         }).catch((error) => {
             console.error('Login failed:', error.message);
         });
