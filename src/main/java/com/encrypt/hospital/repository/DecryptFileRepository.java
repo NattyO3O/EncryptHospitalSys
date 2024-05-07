@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface DecryptFileRepository extends JpaRepository<EncryptFile, Long> {
     List<EncryptFile> findByFileNameContaining(String fileName);
-    // 可以添加其他需要的数据库操作方法
 }

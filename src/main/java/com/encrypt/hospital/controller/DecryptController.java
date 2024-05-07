@@ -23,6 +23,7 @@ public class DecryptController {
     public ResponseEntity<List<EncryptFile>> searchFiles(@RequestParam String fileName) {
         try {
             List<EncryptFile> files = decryptService.searchFilesByName(fileName);
+            System.out.println(files);
             return ResponseEntity.ok(files);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

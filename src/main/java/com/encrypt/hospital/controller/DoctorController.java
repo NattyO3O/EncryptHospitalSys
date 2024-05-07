@@ -3,12 +3,14 @@ package com.encrypt.hospital.controller;
 import com.encrypt.hospital.model.Doctor;
 import com.encrypt.hospital.model.HpUser;
 import com.encrypt.hospital.service.DoctorService;
+import com.encrypt.hospital.service.EncryptionService;
 import com.encrypt.hospital.service.HpUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -56,19 +58,25 @@ public class DoctorController {
         Map<String, String> userData = (Map<String, String>) payload.get("userData");
         try {
             HpUser user = new HpUser();
-            user.setUserName(userData.get("username"));
-            user.setPassWord(userData.get("password"));
+            // 获取用户名和密码
+            String username = userData.get("username");
+            String password = userData.get("password");
+            // 加密密码
+            byte[] encryptedPassword = EncryptionService.encryptSM4(password);
+            String base64EncodedPassword = Base64.getEncoder().encodeToString(encryptedPassword);
+            user.setUserName(username);
+            user.setPassWord(base64EncodedPassword);
             user.setType("Doctor");
             HpUser savedUser = hpUserService.save(user);
 
             Doctor doctor = new Doctor();
             doctor.setUserId(savedUser.getUserID());
             doctor.setDocName(savedUser.getUserName());
-            doctor.setDepartment("NULL");
-            doctor.setEmail("NULL");
-            doctor.setPhoneNumber("NULL");
-            doctor.setProfile("NULL");
-            doctor.setTitle("NULL");
+            doctor.setDepartment("null");
+            doctor.setEmail("null");
+            doctor.setPhoneNumber("null");
+            doctor.setProfile("null");
+            doctor.setTitle("null");
             doctorService.addDoctor(doctor);
 
             return ResponseEntity.ok("医生添加成功");
@@ -80,7 +88,9 @@ public class DoctorController {
     @DeleteMapping("/delete/{doctorId}")
     public ResponseEntity<?> deleteDoctor(@PathVariable int doctorId) {
         try {
+            //int userId = doctorService.findUserIdByDoctorId(doctorId);
             doctorService.deleteDoctorById(doctorId);
+            //hpUserService.deleteUserById(userId);
             return ResponseEntity.ok("医生删除成功");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("删除失败: " + e.getMessage());

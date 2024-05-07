@@ -37,10 +37,6 @@ public class EncryptionService {
         };
         // 使用固定密钥初始化
         SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-        //随机生成密钥
-        /*KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-        keyGenerator.init(256); // 使用256位密钥
-        SecretKey key = keyGenerator.generateKey();*/
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         // 使用密钥和固定的初始化向量
