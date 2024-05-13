@@ -1,4 +1,3 @@
-// 文件路径：/PatientRegister.js
 
 import React, {useEffect, useState} from 'react';
 import { Table, Button, Modal, DatePicker, Select } from 'antd';
