@@ -4,6 +4,8 @@ import com.encrypt.hospital.model.HpUser;
 import com.encrypt.hospital.model.Patient;
 import com.encrypt.hospital.repository.HpUserRepository;
 import com.encrypt.hospital.repository.PatientRepository;
+import com.encrypt.hospital.util.HMACSM3;
+import javafx.scene.canvas.GraphicsContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,8 +38,14 @@ public class HpUserService {
             byte[] encryptedPassword = EncryptionService.encryptSM4(user.getPassWord());
             user.setPassWord(Base64.getEncoder().encodeToString(encryptedPassword));  // 将加密后的二进制数据转换为Base64字符串
             user.setType("Patient");
-
             HpUser savedUser = userRepository.save(user);
+            //完整性
+            savedUser.setUserID_MAC(HMACSM3.generateHmacSm3(String.valueOf(savedUser.getUserID())));
+            savedUser.setUserName_MAC(HMACSM3.generateHmacSm3(savedUser.getUserName()));
+            savedUser.setPassWord_MAC(HMACSM3.generateHmacSm3(savedUser.getPassWord()));
+            savedUser.setType_MAC(HMACSM3.generateHmacSm3(savedUser.getType()));
+            savedUser = userRepository.save(savedUser);
+
             Patient patient = new Patient();
             patient.setUserID(savedUser.getUserID());
             patient.setPatientName(savedUser.getUserName());
@@ -113,6 +121,13 @@ public class HpUserService {
         byte[] encryptedPassword = EncryptionService.encryptSM4(password);  // 使用 SM4 加密密码
         newAdmin.setPassWord(Base64.getEncoder().encodeToString(encryptedPassword));  // 将加密后的二进制数据转换为Base64字符串存储
         newAdmin.setType("Admin");
+        userRepository.save(newAdmin);
+
+        //完整性
+        newAdmin.setUserID_MAC(HMACSM3.generateHmacSm3(String.valueOf(newAdmin.getUserID())));
+        newAdmin.setUserName_MAC(HMACSM3.generateHmacSm3(newAdmin.getUserName()));
+        newAdmin.setPassWord_MAC(HMACSM3.generateHmacSm3(newAdmin.getPassWord()));
+        newAdmin.setType_MAC(HMACSM3.generateHmacSm3(newAdmin.getType()));
         userRepository.save(newAdmin);
     }
 

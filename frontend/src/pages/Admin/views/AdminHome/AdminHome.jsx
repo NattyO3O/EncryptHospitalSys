@@ -1,45 +1,64 @@
-import React, {Component} from 'react';
-import {Card, Col, Row} from "antd";
-import {MedicineBoxOutlined, UserOutlined} from "@ant-design/icons";
+import React, { Component } from 'react';
+import { Table, Button, message } from 'antd';
+import { checkIntegrity, generateDigest } from '../../../../api/integrity';
 
 class AdminHome extends Component {
+    state = {
+        tables: [
+            { key: '1', tableName: '用户表' },
+            { key: '2', tableName: '医生表' },
+            { key: '3', tableName: '患者表' },
+            { key: '4', tableName: '病历表' },
+            { key: '5', tableName: '预约表' }
+        ]
+    };
+
+    handleCheckIntegrity = async (tableName) => {
+        try {
+            const result = await checkIntegrity(tableName);
+            message.success(`完整性检查结果: ${result}`);
+        } catch (error) {
+            message.error(`完整性检查失败: ${error.message}`);
+        }
+    };
+
+    handleGenerateDigest = async (tableName) => {
+        try {
+            const result = await generateDigest(tableName);
+            message.success(`生成摘要结果: ${result}`);
+        } catch (error) {
+            message.error(`生成摘要失败: ${error.message}`);
+        }
+    };
+
     render() {
+        const columns = [
+            {
+                title: '表名',
+                dataIndex: 'tableName',
+                key: 'tableName',
+                align: 'center'
+            },
+            {
+                title: '操作',
+                key: 'action',
+                align: 'center',
+                render: (_, record) => (
+                    <div>
+                        <Button onClick={() => this.handleCheckIntegrity(record.tableName)}>
+                            完整性检查
+                        </Button>
+                        <Button onClick={() => this.handleGenerateDigest(record.tableName)} style={{ marginLeft: 8 }}>
+                            生成摘要
+                        </Button>
+                    </div>
+                )
+            }
+        ];
+
         return (
-            <div style={{ padding: '30px' }}>
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Card style={{
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '150px',  // 调整高度以更好地控制布局
-                            borderRadius: '10px', // 圆角效果
-                            boxShadow: '0 0 10px rgba(0,0,0,0.1)' // 添加阴影效果
-                        }}>
-                            <MedicineBoxOutlined style={{ fontSize: '40px', color: '#08c' }} />
-                            <div style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.65)', marginTop: '10px' }}>管理员数量</div>
-                            <div style={{ fontSize: '24px', color: 'rgba(0,0,0,0.85)', marginTop: '10px' }}>8</div>
-                        </Card>
-                    </Col>
-                    <Col span={12}>
-                        <Card style={{
-                            textAlign: 'center',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '150px',
-                            borderRadius: '10px',
-                            boxShadow: '0 0 10px rgba(0,0,0,0.1)'
-                        }}>
-                            <UserOutlined style={{ fontSize: '40px', color: '#08c' }} />
-                            <div style={{ fontSize: '16px', color: 'rgba(0, 0, 0, 0.65)', marginTop: '10px' }}>医生数量</div>
-                            <div style={{ fontSize: '24px', color: 'rgba(0,0,0,0.85)', marginTop: '10px' }}>4</div>
-                        </Card>
-                    </Col>
-                </Row>
+            <div>
+                <Table dataSource={this.state.tables} columns={columns} pagination={{position: ['bottomCenter']}}/>
             </div>
         );
     }

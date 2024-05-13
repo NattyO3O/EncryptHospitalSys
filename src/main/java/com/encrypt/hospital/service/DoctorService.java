@@ -4,6 +4,7 @@ import com.encrypt.hospital.model.Doctor;
 import com.encrypt.hospital.model.HpUser;
 import com.encrypt.hospital.repository.DoctorRepository;
 import com.encrypt.hospital.repository.HpUserRepository;
+import com.encrypt.hospital.util.HMACSM3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +53,8 @@ public class DoctorService {
 
     public void addDoctor(Doctor doctor) {
         doctorRepository.save(doctor);
+        //完整性
+        genHMACforDoc(doctor, doctorRepository);
     }
 
     public void updateDoctorByDocID(Doctor updatedDoctor) {
@@ -69,6 +72,19 @@ public class DoctorService {
         existingDoctor.setPhoneNumber(updatedDoctor.getPhoneNumber());
         existingDoctor.setProfile(updatedDoctor.getProfile());
 
+        //完整性
+        genHMACforDoc(existingDoctor, doctorRepository);
+    }
+
+    static void genHMACforDoc(Doctor existingDoctor, DoctorRepository doctorRepository) {
+        existingDoctor.setDocID_MAC(HMACSM3.generateHmacSm3(String.valueOf(existingDoctor.getDocID())));
+        existingDoctor.setUserID_MAC(HMACSM3.generateHmacSm3(String.valueOf(existingDoctor.getUserID())));
+        existingDoctor.setDocName_MAC(HMACSM3.generateHmacSm3(existingDoctor.getDocName()));
+        existingDoctor.setDepartment_MAC(HMACSM3.generateHmacSm3(existingDoctor.getDepartment()));
+        existingDoctor.setTitle_MAC(HMACSM3.generateHmacSm3(existingDoctor.getTitle()));
+        existingDoctor.setEmail_MAC(HMACSM3.generateHmacSm3(existingDoctor.getEmail()));
+        existingDoctor.setPhoneNumber_MAC(HMACSM3.generateHmacSm3(existingDoctor.getPhoneNumber()));
+        existingDoctor.setProfile_MAC(HMACSM3.generateHmacSm3(existingDoctor.getProfile()));
         doctorRepository.save(existingDoctor);
     }
 

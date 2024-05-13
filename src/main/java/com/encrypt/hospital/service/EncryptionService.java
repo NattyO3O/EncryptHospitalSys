@@ -2,6 +2,7 @@ package com.encrypt.hospital.service;
 
 import com.encrypt.hospital.model.EncryptFile;
 import com.encrypt.hospital.repository.EncryptedFileRepository;
+import com.encrypt.hospital.util.HMACSM3;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.engines.SM4Engine;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;
@@ -126,6 +127,12 @@ public class EncryptionService {
         encryptedFile.setFileName(fileName);
         encryptedFile.setAlgorithm(algorithm);
         encryptedFile.setEncryptedData(base64EncodedEncryptedData);
+        encryptedFileRepository.save(encryptedFile);
+        //完整性
+        encryptedFile.setFileId_MAC(HMACSM3.generateHmacSm3(String.valueOf(encryptedFile.getFileId())));
+        encryptedFile.setFileName_MAC(HMACSM3.generateHmacSm3(encryptedFile.getFileName()));
+        encryptedFile.setAlgorithm_MAC(HMACSM3.generateHmacSm3(encryptedFile.getAlgorithm()));
+        encryptedFile.setEncryptedData_MAC(HMACSM3.generateHmacSm3(encryptedFile.getEncryptedData()));
         return encryptedFileRepository.save(encryptedFile);
     }
 }

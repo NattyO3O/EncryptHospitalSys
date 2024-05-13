@@ -5,6 +5,7 @@ import com.encrypt.hospital.model.HpUser;
 import com.encrypt.hospital.service.DoctorService;
 import com.encrypt.hospital.service.EncryptionService;
 import com.encrypt.hospital.service.HpUserService;
+import com.encrypt.hospital.util.HMACSM3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +69,13 @@ public class DoctorController {
             user.setPassWord(base64EncodedPassword);
             user.setType("Doctor");
             HpUser savedUser = hpUserService.save(user);
+
+            //用户表中的完整性
+            savedUser.setUserID_MAC(HMACSM3.generateHmacSm3(String.valueOf(savedUser.getUserID())));
+            savedUser.setUserName_MAC(HMACSM3.generateHmacSm3(savedUser.getUserName()));
+            savedUser.setPassWord_MAC(HMACSM3.generateHmacSm3(savedUser.getPassWord()));
+            savedUser.setType_MAC(HMACSM3.generateHmacSm3(savedUser.getType()));
+            hpUserService.save(savedUser);
 
             Doctor doctor = new Doctor();
             doctor.setUserID(savedUser.getUserID());
