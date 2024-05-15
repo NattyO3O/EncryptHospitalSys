@@ -4,7 +4,7 @@ import './index.css'
 import {
     UserOutlined,
     MedicineBoxOutlined,
-    ScheduleOutlined, ContactsOutlined
+    ContactsOutlined
 } from '@ant-design/icons';
 import {withRouter} from "react-router-dom";
 import SubMenu from "antd/es/menu/SubMenu";

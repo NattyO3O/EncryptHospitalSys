@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@material-ui/core": "^4.12.4",
@@ -33,11 +34,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "cross-env HTTPS=true react-scripts start",
+    "start": "cross-env NODE_TLS_REJECT_UNAUTHORIZED=0 HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "homepage": ".y",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -58,6 +60,7 @@
   },
   "options": {
     "allowedHosts": [
+      "192.168.211.1",
       "localhost",
       ".localhost"
     ],

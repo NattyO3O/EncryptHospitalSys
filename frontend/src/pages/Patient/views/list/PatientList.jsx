@@ -26,7 +26,7 @@ const PatientList = () => {
         } else {
             console.log("UserId is undefined");
         }
-    }, [userId, dispatch]);
+    }, [userId, dispatch, form]);
 
     const handleSubmit = (values) => {
         const updatedPatient ={values, userId};

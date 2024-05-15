@@ -41,9 +41,9 @@ public class EncryptionService {
 
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         // 使用密钥和固定的初始化向量
-        byte[] iv = new byte[16]; // 通常，IV 也应该是随机的，这里仅为示例使用全零数组
+        byte[] iv = new byte[16];
         IvParameterSpec ivParams = new IvParameterSpec(iv);
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivParams); //
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivParams);
         return cipher.doFinal(data);
     }
 
@@ -99,10 +99,9 @@ public class EncryptionService {
 
     public String encryptFile(MultipartFile file, String algorithm) throws Exception {
 
-        // 模拟文件加密，实际中应使用真正的加密库和算法，以下为伪代码
         byte[] content = file.getBytes(); // 获取文件内容
         String fileContent = new String(content);
-        byte[] encryptedData; // 这里将是加密后的数据
+        byte[] encryptedData; // 加密后的数据
 
         switch (algorithm) {
             case "AES":

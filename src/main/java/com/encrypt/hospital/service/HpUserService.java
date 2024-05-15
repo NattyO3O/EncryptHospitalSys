@@ -5,7 +5,6 @@ import com.encrypt.hospital.model.Patient;
 import com.encrypt.hospital.repository.HpUserRepository;
 import com.encrypt.hospital.repository.PatientRepository;
 import com.encrypt.hospital.util.HMACSM3;
-import javafx.scene.canvas.GraphicsContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

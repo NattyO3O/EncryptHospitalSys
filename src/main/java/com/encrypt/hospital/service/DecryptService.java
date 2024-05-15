@@ -42,7 +42,7 @@ public class DecryptService {
                 return null;
             }
 
-            // 假设数据以Base64格式存储，先进行解码
+            // 数据以Base64格式存储，先进行解码
             byte[] decodedData = Base64.getDecoder().decode(encryptedData);
 
             System.out.println("Decrypted data length: " + decodedData.length);
@@ -128,7 +128,7 @@ public class DecryptService {
     }
 
     public void saveDecryptedDataToFile(EncryptFile file) {
-        String decryptedData = decryptData(file); // 假设这是你的解密方法
+        String decryptedData = decryptData(file);
 
         if (decryptedData == null) {
             throw new RuntimeException("Decryption failed or no data available.");
