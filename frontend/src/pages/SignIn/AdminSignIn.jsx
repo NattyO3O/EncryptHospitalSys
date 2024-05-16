@@ -70,7 +70,7 @@ function AdminSignIn({ asyncSetAdminObj }) {
                 if (userData.userType === 'Admin') {
                     history.push('/adminSandBox/');
                 } else if (userData.userType === 'Doctor') {
-                    history.push('/docSandBox/');
+                    history.push('/docSandBox/docDuty');
                 }
             } else {
                 console.error('Unexpected user data structure:', userData);

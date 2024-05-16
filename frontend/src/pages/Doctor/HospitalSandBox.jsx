@@ -4,7 +4,6 @@ import SideMenu from "./sandBox/SideMenu"
 import TopHeader from "./sandBox/TopHeader"
 import './HospitalSandBox.css'
 import {Route, Switch} from "react-router-dom";
-import DoctorHome from "./views/home/DoctorHome";
 import DoctorDuty from "./views/duty/DoctorDuty";
 import DoctorList from "./views/list/DoctorList";
 import FileEncrypt from "./views/encrypt/FileEncrypt";
@@ -26,7 +25,6 @@ export default function HospitalSandBox(){
                         minHeight: 280,
                     }}>
                     <Switch>
-                        <Route exact path="/docSandBox/" component={DoctorHome} />
                         <Route path="/docSandBox/docDuty" component={DoctorDuty} />
                         <Route path="/docSandBox/docList" component={DoctorList} />
                         <Route path="/docSandBox/docEncrypt" component={FileEncrypt} />

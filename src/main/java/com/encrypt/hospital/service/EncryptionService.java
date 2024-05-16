@@ -100,7 +100,7 @@ public class EncryptionService {
     public String encryptFile(MultipartFile file, String algorithm) throws Exception {
 
         byte[] content = file.getBytes(); // 获取文件内容
-        String fileContent = new String(content);
+        String fileContent = new String(content, StandardCharsets.UTF_8);
         byte[] encryptedData; // 加密后的数据
 
         switch (algorithm) {

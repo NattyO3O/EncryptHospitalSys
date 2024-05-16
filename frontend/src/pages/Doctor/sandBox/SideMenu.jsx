@@ -2,7 +2,6 @@ import React from "react";
 import {Layout, Menu} from 'antd';
 import './index.css'
 import {
-    UserOutlined,
     CalendarOutlined,
     ContactsOutlined,
     CloudUploadOutlined,
@@ -13,11 +12,6 @@ import SubMenu from "antd/es/menu/SubMenu";
 const {Sider} = Layout;
 
 const menuList = [
-    {
-        key:"/docSandBox/",
-        title:"首页",
-        icon:<UserOutlined />
-    },
     {
         key:"/docSandBox/docDuty",
         title:"我的值班表",

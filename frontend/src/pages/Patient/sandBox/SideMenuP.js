@@ -2,7 +2,6 @@ import React from "react";
 import {Layout, Menu} from 'antd';
 import './index.css'
 import {
-    UserOutlined,
     MedicineBoxOutlined,
     ContactsOutlined
 } from '@ant-design/icons';
@@ -11,11 +10,6 @@ import SubMenu from "antd/es/menu/SubMenu";
 const {Sider} = Layout;
 
 const menuList = [
-    {
-        key:"/patSandBox/",
-        title:"首页",
-        icon:<UserOutlined />
-    },
     {
         key:"/patSandBox/patRegister",
         title:"在线挂号",

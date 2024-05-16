@@ -13,7 +13,7 @@ const PatientRegister = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
-    const [setSelectedDepartment] = useState('');
+    const [selectedDepartment,setSelectedDepartment] = useState('');
     const [doctors, setDoctors] = useState([]);  // 添加这行来管理医生数据状态
     const dispatch = useDispatch();
     const userId = useSelector(state => state.auth.userId);

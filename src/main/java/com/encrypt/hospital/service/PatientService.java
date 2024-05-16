@@ -54,11 +54,15 @@ public class PatientService {
         if (patient != null) {
             patient.setPatientName(updatedPatient.getPatientName());
             patient.setSex(updatedPatient.getSex());
-            patient.setAge(updatedPatient.getAge());
             // 加密 nationalID 和 phoneNumber
-            patient.setNationalID(encryptToBase64(updatedPatient.getNationalID()));
+            String cipher = encryptToBase64(updatedPatient.getNationalID());
+            System.out.println(cipher);
+            patient.setNationalID(cipher);
+            System.out.println("加密电话成功");
             patient.setPhoneNumber(encryptToBase64(updatedPatient.getPhoneNumber()));
-            System.out.println("加密成功");
+            System.out.println("加密身份证成功");
+
+            patient.setAge(updatedPatient.getAge());
             //完整性
             genMACforPatient(patient, patientRepository);
         } else {
@@ -71,9 +75,12 @@ public class PatientService {
         patient.setUserID_MAC(HMACSM3.generateHmacSm3(String.valueOf(patient.getUserID())));
         patient.setPatientName_MAC(HMACSM3.generateHmacSm3(patient.getPatientName()));
         patient.setSex_MAC(HMACSM3.generateHmacSm3(patient.getSex()));
-        patient.setAge_MAC(HMACSM3.generateHmacSm3(String.valueOf(patient.getAge())));
+
+        System.out.println("年龄摘要"+patient.getAge_MAC());
         patient.setPhoneNumber_MAC(HMACSM3.generateHmacSm3(patient.getPhoneNumber()));
+        System.out.println("电话摘要"+patient.getPhoneNumber_MAC());
         patient.setNationalID_MAC(HMACSM3.generateHmacSm3(patient.getNationalID()));
+        patient.setAge_MAC(HMACSM3.generateHmacSm3(patient.getAge()));
 
         patientRepository.save(patient);
     }

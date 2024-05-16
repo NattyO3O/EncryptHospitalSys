@@ -31,16 +31,14 @@ public class PatientController {
             patient.setUserID(userID);
             patient.setPatientName(values.get("patientName"));
             patient.setSex(values.get("sex"));
-            patient.setAge(Integer.valueOf(values.get("age")));
+
             patient.setPhoneNumber(values.get("phoneNumber"));
             patient.setNationalID(values.get("nationalID"));
+            patient.setAge(values.get("age"));
             patientService.updatePatientDetails(patient);
             return ResponseEntity.ok("个人信息修改成功");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("更新失败: " + e.getMessage());
         }
     }
-
-
-
 }

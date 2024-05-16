@@ -25,9 +25,8 @@ public class Patient {
     @Column(name="Sex_MAC")
     private String sex_MAC;
 
-
     @Column(name="Age")
-    private Integer age;
+    private String age;
     @Column(name="Age_MAC")
     private String age_MAC;
 
@@ -73,11 +72,11 @@ public class Patient {
         this.sex = sex;
     }
 
-    public Integer getAge() {
+    public String getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
